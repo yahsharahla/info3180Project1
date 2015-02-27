@@ -7,34 +7,56 @@ This file creates your application.
 """
 
 from app import app
-from flask import render_template, request, redirect, url_for
+from flask import render_template, request, redirect, url_for, Flask
+from .form import profileForm
+from . import models
+from app import db
+from app.models import profile_user
+import os
+from werkzeug import secure_filename
+from os import path
 
-
-###
 # Routing for your application.
-###
-
+    
 @app.route('/')
 def home():
-    """Render website's home page."""
-    return render_template('home.html')
+    return render_template('home.html')	  
+
+@app.route('/profile/', methods = ["POST", "GET"])
+def profile_add():
+    """up loads the profile to database"""
+    form = profileForm()
+    if request.method == "POST":
+      first_name = request.form['first_name']
+      last_name = request.form['last_name']
+      age = request.form ['age']
+      sex = request.form ['sex']
+      file_upload = request.files['image']
+      filename = file_upload.filename
+      file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+      user = models.profile_user(first_name,last_name,age,sex, file_path)
+      file_upload.save(file_path)
+      #db.session.add(user)
+      #db.session.commit()
+      return "I am {} {} of age {} and i am a {} {}".format(first_name, last_name, age, sex, file_path)
+    return render_template('profile.html', form = form)
 
 
-@app.route('/about/')
-def about():
-    """Render the website's about page."""
-    return render_template('about.html')
+@app.route('/profiles/')
+def profiles_view():
+    """view the list of profiles"""
+    return "list of profiles"
+	#return render_template('about.html')
 
 
 ###
 # The functions below should be applicable to all Flask apps.
 ###
 
-@app.route('/<file_name>.txt')
-def send_text_file(file_name):
-    """Send your static text file."""
-    file_dot_text = file_name + '.txt'
-    return app.send_static_file(file_dot_text)
+@app.route('/profile/<int:id>')
+def profile_user(id):
+   """Send your static text file."""
+   return "profile {}".format(id)
 
 
 @app.after_request
@@ -55,4 +77,4 @@ def page_not_found(error):
 
 
 if __name__ == '__main__':
-    app.run(debug=True,host="0.0.0.0",port="8888")
+    app.run(debug=True,host="0.0.0.0",port=8080)
