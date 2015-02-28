@@ -1,13 +1,56 @@
 {% extends "base.html" %}
 
 {% block content %}
+<head>
+  <style>
+    body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 25px;
+  line-height: 1.528571429;
+  color: #31FABD;
+  background-color: #AC67C8;
+}
+  .container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.container:before,
+.container:after {
+  display: table;
+  content: " ";
+}
+
+.container:after {
+  clear: both;
+}
+
+.container:before,
+.container:after {
+  display: table;
+  content: " ";
+}
+
+.container:after {
+  clear: both;
+}
+    input[type="text"i]{
+      
+    }
+
+  </style>
+</head>
 <div class='container'>
   <form action = "{{ url_for('profile_add') }}" method = "post" enctype = "multipart/form-data">
     First Name: {{ form.first_name }}</br>
     last Name:  {{ form.last_name }}</br>
+    Username:    {{form.username}}</br>
     age:        {{ form.age }}</br>
     Sex:        {{ form.sex }}</br>
     Image:      {{form.image}}</br>
     <input type = "submit"/>
 </form>
+</div>
 {% endblock %}

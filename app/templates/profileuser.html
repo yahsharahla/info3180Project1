@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <head>
+    <style>
+      body{
+        background-color:#BC0BF9;
+      }      
+      .info{
+        background-color: #D1E6E8;
+        margin-left: 450px;
+        position: relative;
+        border-style: solid;
+        border-bottom-width: 0px;
+        border-top-width: 0px;
+        border-color: black;
+        padding-top: 10px;
+        padding-right: 50px;
+        padding-bottom: 15px;
+        padding-left: 50px;
+        margin-top: 1px;
+        margin-bottom: 1px;
+      }
+      
+      #name{
+        border-bottom-width: 5px;
+        border-top-width: 5px;
+        margin-top: 1px;
+        margin-bottom: 20px;
+      }
+      
+      
+      img{
+      width: 400px;
+      height: 300px;
+      position: absolute;
+      margin-right: 5px;
+      position:absolute;top:50
+      }
+     
+    </style>
+  </head>
+ <img src="url_for('006.jpg')"/> 
+ <h3 class="info" id="name">{{profile.first_name}} {{profile.last_name}}</h3>
+      <h3 class="info">Username: {{profile.username}} </h3>
+      <h3 class="info">ID: {{profile.id}}</h3>
+      <h3 class="info">Sex: {{profile.sex}}</h3>
+      <h3 class="info">Age: {{profile.age}}</h3> 
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head> 
+  <style> 
+    th,td{border:1px solid black}
+    table{background-color: #66FF66}
+    
+  </style> 
+</head>
+<div class='container'>
+  <h1>Profile Users<h1>
+    <table>
+      <tr>
+        <th>User ID</th>
+        <th>User Name</th>
+      </tr>
+      {%for profile in profiles%}
+      <tr>
+        <td>{{profile.id}}</td>
+        <td><a href='/profileuser/{{profile.id}}'>{{profile.first_name}}, {{profile.last_name}}</a></td>
+      </tr>
+       {%endfor%}
+    </table>
+</div>
+{% endblock %}

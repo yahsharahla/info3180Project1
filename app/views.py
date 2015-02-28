@@ -7,7 +7,7 @@ This file creates your application.
 """
 
 from app import app
-from flask import render_template, request, redirect, url_for, Flask
+from flask import render_template, request, redirect, url_for, Flask, flash
 from .form import profileForm
 from . import models
 from app import db
@@ -16,7 +16,8 @@ import os
 from werkzeug import secure_filename
 from os import path
 
-# Routing for your application.
+# Routing for your applicationfrom flask import jsonify, session
+from flask import jsonify, session
     
 @app.route('/')
 def home():
@@ -29,34 +30,35 @@ def profile_add():
     if request.method == "POST":
       first_name = request.form['first_name']
       last_name = request.form['last_name']
+      username = request.form['username']
       age = request.form ['age']
       sex = request.form ['sex']
       file_upload = request.files['image']
       filename = file_upload.filename
       file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-      user = models.profile_user(first_name,last_name,age,sex, file_path)
+      user = models.profile_user(first_name,last_name,username, age,sex, file_path)
       file_upload.save(file_path)
-      #db.session.add(user)
-      #db.session.commit()
-      return "I am {} {} of age {} and i am a {} {}".format(first_name, last_name, age, sex, file_path)
+      db.session.add(user)
+      db.session.commit()
+      flash('Welcome, and thanks for your info')
     return render_template('profile.html', form = form)
 
 
 @app.route('/profiles/')
 def profiles_view():
     """view the list of profiles"""
-    return "list of profiles"
-	#return render_template('about.html')
+    profiles = models.profile_user.query.all()
+    return render_template('profiles.html', profiles = profiles)
 
 
 ###
 # The functions below should be applicable to all Flask apps.
 ###
 
-@app.route('/profile/<int:id>')
-def profile_user(id):
-   """Send your static text file."""
-   return "profile {}".format(id)
+@app.route('/profileuser/<int:id>',methods=['GET','POST'])
+def profile_view(id):
+  profile=models.profile_user.query.get(id)
+  return render_template('profileuser.html', profile =profile )
 
 
 @app.after_request
